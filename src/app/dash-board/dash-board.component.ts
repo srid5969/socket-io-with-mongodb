@@ -12,23 +12,23 @@ export class DashBoardComponent implements OnInit {
   constructor(private chatService: ChatService) {}
 
   ngOnInit() {
-    console.log('dfjkbgjhw');
-    try {
-      console.log(this.chatService.getMessage('demo'));
-    } catch (error) {
-      console.log(error);
-    }
+    // console.log('dfjkbgjhw');
+    // try {
+    //   console.log(this.chatService.getMessage('demo'));
+    // } catch (error) {
+    //   console.log(error);
+    // }
     // this.chatService.sendMessage('demo', this.newMessage);
-    // this.chatService.getMessage('demo').subscribe((message: any) => {
-    //   console.log(message);
+    this.chatService.getMessage('demo').subscribe((message: any) => {
+      console.log(message);
 
-    //   this.messageList.push(message);
-    // });
+      this.messageList.push(JSON.stringify(message));
+    });
   }
 
   sendMessage() {
     console.log("lksdhjfahgsidfgailsdfgasd",this.chatService.getMessage('demo'));
-
+    this.messageList.push("message");
     this.chatService.sendMessage('demo', this.newMessage);
     this.newMessage = '';
   }
