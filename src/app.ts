@@ -6,27 +6,34 @@ import db from "./common/manager.ts/config";
 import { createServer } from "http";
 import { demo, registerHandlers } from "./user/controller/socket";
 import { changesInUserDocument } from "./common/triggers/user";
-let port = 8082;
-mongoose.connect(db);
-const database = mongoose.connection;
-const app: Express = express();
-const httpServer = createServer(app);
-app.use("/", user);
+const main = async () => {
+  let port = 8082;
+  mongoose.connect(db);
+  const database = mongoose.connection;
+  const app: Express = express();
+  const httpServer = createServer(app);
+  app.use("/", user);
 
-const server = httpServer.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-});
-const io = new Server(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true,
-  },
-});
-const onConnection = (socket: Socket) => {
-  changesInUserDocument(io, socket);
-  registerHandlers(io, socket);
-  demo(io, socket)
+  const server = httpServer.listen(port, () => {
+    console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+  });
+  const io = new Server(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+      allowedHeaders: ["my-custom-header"],
+      credentials: true,
+    },
+  });
+  const onConnection = (socket: Socket) => {
+    changesInUserDocument(io, socket);
+    registerHandlers(io, socket);
+    demo(io, socket);
+  };
+  io.on("connection", onConnection);
 };
-io.on("connection", onConnection);
+main().catch((err) => {
+  console.error(err);
+});
+//https://snyk.io/advisor/npm-package/tsyringe/example
+//https://vscode.dev/github/mertturkmenoglu/typescript-dependency-injection

@@ -1,4 +1,5 @@
 import user, { IUser } from "../model/user";
+import { userRepository } from "../repository/userRepository";
 export class UserService {
   constructor() {}
   async register(data: IUser) {
