@@ -1,6 +1,7 @@
 import mongodb from "mongodb";
 import mongoose, { Schema, model } from "mongoose";
-
+import { mongoString } from "@environments/manager";
+// !: working
 export interface IUser {
   username?: string;
   password?: string;
