@@ -6,7 +6,7 @@ export interface IUser {
   password?: string;
   createdAt?: Date;
 }
-const userSchema = new Schema<IUser>(
+export const userSchema = new Schema<IUser>(
   {
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true, unique: true, select: false },
