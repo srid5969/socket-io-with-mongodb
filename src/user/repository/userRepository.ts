@@ -7,7 +7,7 @@ import { IUserRepository } from "./IUserRepository";
 
 @MongoRepository()
 export class UserRepository implements IUserRepository {
-  constructor(@inject('jk') private userModel: Model<IUser>) {
+  constructor(@inject('Model') private userModel: Model<IUser>) {
     this.userModel = User;
   }
   public async findAll(): Promise<Array<IUser>> {

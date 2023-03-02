@@ -6,8 +6,8 @@ export async function registerHandlers(io: Server, socket: Socket) {
   console.log(socket.rooms);
 
   socket.on("register", async (data: any) => {
-    const Data = await register(data);
-    socket.emit("register", Data);
+    // const Data = await register(data);
+    // socket.emit("register", Data);
   });
 }
 export async function demo(io: Server, socket: Socket){
