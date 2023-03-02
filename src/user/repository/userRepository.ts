@@ -1,31 +1,20 @@
-import { injectable as Injectable } from "tsyringe";
+import { autoInjectable as MongoRepository, inject } from "tsyringe";
+import 'reflect-metadata';
 
+import { Model } from "mongoose";
 import User, { IUser } from "../model/user";
-import mongoose, { model, Model, Document, Promise } from "mongoose";
+import { IUserRepository } from "./IUserRepository";
 
-@Injectable()
-// export class UserRepository extends User{
-//   constructor(private userModel: Model<IUser>) {}
-// }
-// let d=new UserRepository()
-export class RepositoryBase<T extends Document> {
-  private _model: Model<Document>;
-
-  constructor(schemaModel: Model<Document>) {
-    this._model = schemaModel;
+@MongoRepository()
+export class UserRepository implements IUserRepository {
+  constructor(@inject('jk') private userModel: Model<IUser>) {
+    this.userModel = User;
   }
-
-  create(item: T): Promise<any> {
-    return this._model.create(item);
+  public async findAll(): Promise<Array<IUser>> {
+    return await this.userModel.find();
   }
-}
-//    And finally my UserRepository which extends RepositoryBase and implements an IUserRepository (actually empty):
-
-export class UserRepository
-  extends RepositoryBase<IUser>
-  implements IUserRepository
-{
-  constructor() {
-    super(User);
+  public async save(params: IUser): Promise<IUser> {
+    const data = new this.userModel(params);
+    return await data.save();
   }
 }

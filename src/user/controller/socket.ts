@@ -1,4 +1,4 @@
-import { register } from "../service/user";
+// import { register } from "../service/user";
 import { Server, Socket } from "socket.io";
 
 export async function registerHandlers(io: Server, socket: Socket) {

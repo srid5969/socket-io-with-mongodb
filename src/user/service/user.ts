@@ -1,20 +1,15 @@
-import user, { IUser } from "../model/user";
-import { autoInjectable, delay, inject, injectable } from 'tsyringe';
-import {UserRepository} from "../repository/userRepository";
+import { autoInjectable as Service } from "tsyringe";
+import { IUser } from "../model/user";
+import { UserRepository } from "../repository/userRepository";
 
-
-// @Injectable()
+@Service()
 export class UserService {
-  constructor((@inject(delay(() => UserRepository))
-  private repository: UserRepository) {}
-  async register(data: IUser) {
-    const Data = new user(data);
-    const savedData = await Data.save();
-    return savedData;
+  constructor(private readonly userRepository: UserRepository) {}
+
+  async findAll(): Promise<Array<IUser>> {
+    return this.userRepository.findAll();
   }
-}
-export async function register(data: IUser) {
-  const Data = new user(data);
-  const savedData = await Data.save();
-  return savedData;
+  async register(data: IUser): Promise<IUser> {
+    return this.userRepository.save(data);
+  }
 }
