@@ -1,7 +1,8 @@
+import user from "./user/router/user.routers";
+
 import "reflect-metadata";
 import express, { Request, Response, Express } from "express";
 import { Server, Socket } from "socket.io";
-import user from "./user/controller/user";
 import mongoose from "mongoose";
 import db from "./common/manager.ts/config";
 import { createServer } from "http";

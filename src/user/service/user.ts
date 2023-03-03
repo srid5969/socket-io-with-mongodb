@@ -4,7 +4,7 @@ import { UserRepository } from "../repository/userRepository";
 
 @Service()
 export class UserService {
-  constructor(@inject("UserRepository") private readonly userRepository: UserRepository) {}
+  constructor( private readonly userRepository: UserRepository) {}
 
   async findAll(): Promise<Array<IUser>> {
     return this.userRepository.findAll();

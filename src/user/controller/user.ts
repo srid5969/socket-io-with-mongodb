@@ -1,18 +1,15 @@
 import { Request, Response, Express } from "express";
+import { UserService } from "../service/user";
+import { autoInjectable, injectable } from "tsyringe";
 // import { register } from "../service/user";
 let router: Express = require("express").Router();
+@autoInjectable()
+class UserController {
+  constructor(private readonly userService: UserService) {}
+  async getAllUsers(_req: Request, res: Response) {
+    const result = await this.userService.findAll();
+    return res.json(result);
+  }
+}
 
-// router.post("/register", async (req: Request | any, res: Response) => {
-//   register(req.body)
-//     .then((result) => {
-//       res.json(result);
-//     })
-//     .catch((err) => {
-//       res.json(err).status(404);
-//     });
-// });
-// router.get("/", (req: Request, res: Response) => {
-//   console.log("Get Api got Hitted");
-//   res.send({ message: "Get Api got Hitted" });
-// });
-export default router;
+export default UserController;
