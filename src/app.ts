@@ -6,7 +6,7 @@ import db from "./common/manager.ts/config";
 import { createServer } from "http";
 import { demo, registerHandlers } from "./user/controller/socket";
 import { changesInUserDocument } from "./common/triggers/user";
-let port = 8082;
+let port = 8080;
 mongoose.connect(db);
 const database = mongoose.connection;
 const app: Express = express();
