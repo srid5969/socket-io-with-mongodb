@@ -1,20 +1,20 @@
+import { Server, Socket } from "socket.io";
+import { injectable } from "tsyringe";
 import user, { IUser } from "../model/user";
-import { autoInjectable, delay, inject, injectable } from 'tsyringe';
-import {UserRepository} from "../repository/userRepository";
+import { UserRepository } from '../repository/userRepository';
 
 
-// @Injectable()
+
+@injectable()
 export class UserService {
-  constructor((@inject(delay(() => UserRepository))
-  private repository: UserRepository) {}
-  async register(data: IUser) {
+  constructor(private userRepository:UserRepository ){}
+ public async register(data: IUser) {
     const Data = new user(data);
     const savedData = await Data.save();
     return savedData;
   }
+  public async changesInUserDocument(io: Server, socket: Socket){
+    this.userRepository.changesInUserDocument(io, socket);
+  }
 }
-export async function register(data: IUser) {
-  const Data = new user(data);
-  const savedData = await Data.save();
-  return savedData;
-}
+

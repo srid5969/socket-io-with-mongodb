@@ -1,9 +1,12 @@
 import { Request, Response, Express } from "express";
-import { register } from "../service/user";
 let router: Express = require("express").Router();
+import { container } from "../../common/iocContainer/iocCongig";
+import { UserService } from "../service/user";
 
 router.post("/register", async (req: Request | any, res: Response) => {
-  register(req.body)
+  container
+    .resolve(UserService)
+    .register(req.body)
     .then((result) => {
       res.json(result);
     })
