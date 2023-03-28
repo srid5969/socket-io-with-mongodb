@@ -17,7 +17,7 @@ mongoose.connect(db);
  * connecting  mongodb
  */
 const database = mongoose.connection;
-database.on("error", (error) => console.error());
+database.on("error", (error:any) => console.error(error));
 database.once("connected", () => console.log("Database Connected"));
 
 const app: Application = express();
