@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model,Model } from "mongoose";
 
 export interface IUser {
   id: any;
@@ -30,5 +30,5 @@ export const userSchema: Schema = new Schema<IUser>(
 );
 
 
-const User = model<IUser>("users", userSchema);
+let User:Model<IUser> = model<IUser>("users", userSchema);
 export default User;

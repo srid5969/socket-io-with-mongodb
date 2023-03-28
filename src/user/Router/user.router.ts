@@ -1,7 +1,7 @@
 import { UserController } from "../Controller/UserController";
 
 let router = require("express").Router();
-import {container} from "../../common/iocConfig/config";
+import {container} from "@src/common/iocConfig/config";
 
 
 let controller = container.get<UserController>(UserController);

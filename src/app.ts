@@ -1,19 +1,48 @@
-import express, { Request, Response, Express } from "express";
-import { Server, Socket } from "socket.io";
-import user from "./user/controller/user";
+"use strict";
+import express, { Application } from "express";
 import mongoose from "mongoose";
-import db from "./common/manager.ts/config";
-import { createServer } from "http";
-import { demo, registerHandlers } from "./user/controller/socket";
-import { changesInUserDocument } from "./common/triggers/user";
-let port = 8080;
-mongoose.connect(db);
-const database = mongoose.connection;
-const app: Express = express();
-const httpServer = createServer(app);
-app.use("/", user);
+import cors from "cors";
+import bodyParser from "body-parser";
+import reflectMetadata from "reflect-metadata";
+import morgan from "morgan";
+import { Server, Socket } from "socket.io";
 
-const server = httpServer.listen(port, () => {
+import db from "src/common/manager/config";
+import user from "./user/Router/user.router";
+import { changesInUserDocument } from "./user/Socket.io/userHandler";
+
+const port: number = 8000;
+mongoose.connect(db);
+/**
+ * connecting  mongodb
+ */
+const database = mongoose.connection;
+database.on("error", (error: any) => console.error(error));
+database.once("connected", () => console.log("Database Connected"));
+
+const app: Application = express();
+/**
+ * Added cors to resolve cors  @errors
+ * @default 'GET,HEAD,PUT,PATCH,POST,DELETE'
+ */
+app.use(cors({ origin: "*" }));
+app.use(bodyParser.json());
+/**
+ * Returns middleware that only parses json and only looks at requests
+ * where the Content-Type header matches the type option.
+ */
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+/**
+ * Used OAuth 2.1 for authentication
+ */
+app.use(morgan("combined"));
+
+app.use(user);
+/**
+ * listing to the  @port 8000
+ */
+const server = app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
 const io = new Server(server, {
@@ -26,7 +55,5 @@ const io = new Server(server, {
 });
 const onConnection = (socket: Socket) => {
   changesInUserDocument(io, socket);
-  registerHandlers(io, socket);
-  demo(io, socket)
 };
 io.on("connection", onConnection);
