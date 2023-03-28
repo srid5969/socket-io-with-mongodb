@@ -7,9 +7,9 @@ import reflectMetadata from "reflect-metadata";
 import morgan from "morgan";
 import { Server, Socket } from "socket.io";
 
-import db from "./common/manager/config";
+import db from "@src/common/manager/config";
 import user from "./user/Router/user.router";
-import { container } from "./common/iocConfig/config";
+
 
 const port: number = 8000;
 mongoose.connect(db);
